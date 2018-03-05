@@ -124,12 +124,12 @@ if len(sys.argv) >= 2:
         digits = 32 #in practice it could will be 32 (from .0001 monero to ~400k monero) all other amounts can be represented by full 64 if necessary, otherwise you can use the sliding implementation of RingCT given below.
         print("inputs")
         a = 10000
-        Cia, L1a, s2a, sa, ska = RingCT.genRangeProof(10000, digits)
+        Ca, Cia, L1a, s2a, sa, ska = RingCT.genRangeProof(10000, digits)
         print("outputs")
         b = 7000
-        Cib, L1b, s2b, sb, skb = RingCT.genRangeProof(7000, digits)
+        Cb, Cib, L1b, s2b, sb, skb = RingCT.genRangeProof(7000, digits)
         c = 3000
-        Cic, L1c, s2c, sc, skc = RingCT.genRangeProof(3000, digits)
+        Cc, Cic, L1c, s2c, sc, skc = RingCT.genRangeProof(3000, digits)
         print("verifying range proofs of outputs")
         RingCT.verRangeProof(Cib, L1b, s2b, sb)
         RingCT.verRangeProof(Cic, L1c, s2c, sc)
@@ -165,8 +165,10 @@ if len(sys.argv) >= 2:
                 x[j][i] = PaperWallet.skGen()
                 P[j][i] = MiniNero.scalarmultBase(x[j][i])
             sk[j] = x[j][ind]
-        print("x", x)
+        print("Private key x: ", x)
+        print("Public key P: ", P)
         II, cc, ss = MLSAG.MLSAG_Sign(P, sk, ind) 
+        print("MLSAG Signature:", II, cc, ss)
         print("Sig verified?", MLSAG.MLSAG_Ver(P, II, cc, ss) )
     if sys.argv[1] == "MLSAG2":
         #below is example usage. Uncomment each line for testing
@@ -253,6 +255,7 @@ if len(sys.argv) >= 2:
                P2[j] = MiniNero.scalarmultBase(x[j])
                P1[j] = PaperWallet.pkGen()
         L1, s2, s = ASNL.GenASNL(x, P1, P2, indi)
+        print("L1, s2, s: ", L1, s2, s)
         ASNL.VerASNL(P1, P2, L1, s2, s)
     if sys.argv[1] == "brief":
         #shows compatibility with Ref10 (c.f. with sh runtest.sh in brief directory
