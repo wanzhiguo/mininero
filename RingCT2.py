@@ -1,7 +1,7 @@
 import MiniNero
 import MLSAG2
 import PaperWallet
-import AggregateSchnorr
+import ASNL
 import Ecdh
 import Crypto.Random.random as rand
 
